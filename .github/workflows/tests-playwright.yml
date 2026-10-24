@@ -61,7 +61,8 @@ jobs:
         run: |
           for k in MAIL_SMTP_USER MAIL_SMTP_APP_PASSWORD MAIL_TO SLACK_WEBHOOK_URL \
                    SLACK_BOT_TOKEN SLACK_CHANNEL_ID TEAMS_WEBHOOK_URL; do
-            if [ -n "${!k}" ]; then echo "$k : défini"; else echo "$k : vide"; fi
+            v="${!k}"; t="$(printf '%s' "$v" | tr -d '[:space:]')"
+            echo "$k : ${#v} caractère(s), dont ${#t} hors espaces"
           done
 
       - name: Lancer les tests
