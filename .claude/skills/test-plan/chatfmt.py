@@ -23,7 +23,7 @@ def load_env():
                 key, value = line.split("=", 1)
                 values[key.strip()] = value.strip()
     for key, value in os.environ.items():
-        if value.strip() and (key.startswith(("MAIL_", "SLACK_", "TEAMS_", "XRAY_", "AGENT_"))):
+        if value.strip() and (key.startswith(("MAIL_", "SLACK_", "TEAMS_", "XRAY_", "AGENT_", "JIRA_"))):
             values[key] = value.strip()
     return values
 
