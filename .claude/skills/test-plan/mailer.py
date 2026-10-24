@@ -24,19 +24,10 @@ from pathlib import Path
 
 import truststore
 
-ENV_FILE = Path(__file__).resolve().parents[3] / ".env"
+from chatfmt import load_env  # .env + variables d'environnement (Secrets GitHub Actions)
+
 SMTP_HOST = "smtp.gmail.com"
 SMTP_PORT = 465
-
-
-def load_env():
-    values = {}
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            key, value = line.split("=", 1)
-            values[key.strip()] = value.strip()
-    return values
 
 
 def settings():

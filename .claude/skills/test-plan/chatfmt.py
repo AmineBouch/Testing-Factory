@@ -1,6 +1,7 @@
 """Outils communs à slack.py et teams.py : lecture du .env et mise en forme
 du Markdown des rapports (titres, gras, liens, tableaux) pour Slack ou Teams."""
 
+import os
 import re
 from pathlib import Path
 
@@ -12,14 +13,18 @@ TABLE_SEP = re.compile(r"^\|?\s*:?-{2,}:?\s*(\|\s*:?-{2,}:?\s*)*\|?$")
 
 
 def load_env():
+    """Lit le .env s'il existe ; une variable d'environnement non vide du même nom
+    l'emporte (c'est ainsi que GitHub Actions fournit les Secrets)."""
     values = {}
-    if not ENV_FILE.exists():
-        return values
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            key, value = line.split("=", 1)
-            values[key.strip()] = value.strip()
+    if ENV_FILE.exists():
+        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line and not line.startswith("#") and "=" in line:
+                key, value = line.split("=", 1)
+                values[key.strip()] = value.strip()
+    for key, value in os.environ.items():
+        if value.strip() and (key.startswith(("MAIL_", "SLACK_", "TEAMS_", "XRAY_", "AGENT_"))):
+            values[key] = value.strip()
     return values
 
 

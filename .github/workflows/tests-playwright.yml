@@ -19,6 +19,16 @@ concurrency:
 
 env:
   TZ: Europe/Paris
+  # Les scripts lisent ces variables directement (elles priment sur un éventuel .env).
+  MAIL_SMTP_USER: ${{ secrets.MAIL_SMTP_USER }}
+  MAIL_SMTP_APP_PASSWORD: ${{ secrets.MAIL_SMTP_APP_PASSWORD }}
+  MAIL_TO: ${{ secrets.MAIL_TO }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
+  SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
+  TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+  # ffmpeg d'Ubuntu (avec le filtre drawtext) pour la vidéo résumé de 10 s.
+  IMAGEIO_FFMPEG_EXE: /usr/bin/ffmpeg
 
 jobs:
   tests:
@@ -43,25 +53,16 @@ jobs:
           cd automation
           npm ci
           npx playwright install --with-deps chromium
-          sudo apt-get install -y fonts-noto-color-emoji
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq fonts-noto-color-emoji ffmpeg
 
-      # Les scripts lisent leurs identifiants dans .env : on le recrée à partir des Secrets du dépôt.
-      - name: Créer le .env depuis les Secrets GitHub
-        env:
-          MAIL_SMTP_USER: ${{ secrets.MAIL_SMTP_USER }}
-          MAIL_SMTP_APP_PASSWORD: ${{ secrets.MAIL_SMTP_APP_PASSWORD }}
-          MAIL_TO: ${{ secrets.MAIL_TO }}
-          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
-          SLACK_CHANNEL_ID: ${{ secrets.SLACK_CHANNEL_ID }}
-          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+      # Affiche seulement « défini » ou « vide » pour chaque secret, jamais sa valeur.
+      - name: Vérifier les Secrets
         run: |
-          {
-            for k in MAIL_SMTP_USER MAIL_SMTP_APP_PASSWORD MAIL_TO SLACK_WEBHOOK_URL \
-                     SLACK_BOT_TOKEN SLACK_CHANNEL_ID TEAMS_WEBHOOK_URL; do
-              printf '%s=%s\n' "$k" "${!k}"
-            done
-          } > .env
+          for k in MAIL_SMTP_USER MAIL_SMTP_APP_PASSWORD MAIL_TO SLACK_WEBHOOK_URL \
+                   SLACK_BOT_TOKEN SLACK_CHANNEL_ID TEAMS_WEBHOOK_URL; do
+            if [ -n "${!k}" ]; then echo "$k : défini"; else echo "$k : vide"; fi
+          done
 
       - name: Lancer les tests
         id: tests
@@ -89,12 +90,8 @@ jobs:
             reports/execution-playwright-*
             automation/playwright-report/
 
-      - name: Supprimer le .env
-        if: always()
-        run: rm -f .env
-
       - name: Marquer le run en échec si des tests ont échoué
-        if: steps.tests.outcome == 'failure'
+        if: always() && steps.tests.outcome == 'failure'
         run: |
           echo "::error::Au moins un test Playwright a échoué (voir le rapport envoyé)."
           exit 1
