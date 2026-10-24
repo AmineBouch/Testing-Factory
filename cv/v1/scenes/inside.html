@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Inside the agent</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .5s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.stack{position:absolute;left:80px;top:168px;width:1120px;display:flex;flex-direction:column;gap:14px}
+.layer{display:flex;align-items:center;gap:22px;height:92px;padding:0 24px;border-radius:16px;background:#1D2640;border:1.5px solid #34406A;
+  opacity:0;animation:slide .5s cubic-bezier(.2,1.2,.4,1) forwards;box-shadow:0 10px 26px rgba(0,0,0,.22)}
+.l1{animation-delay:.4s;background:linear-gradient(90deg,#C9541F,#9E3F17);border-color:#E0713A}
+.l2{animation-delay:1.2s}.l3{animation-delay:2.0s}.l4{animation-delay:2.8s}
+.tag{width:150px;flex:none;font-size:15px;letter-spacing:.22em;font-weight:700;color:#E0713A}
+.l1 .tag{color:#FFE2D2}
+.main{width:250px;flex:none}
+.main b{display:block;font-size:24px;line-height:1.15}
+.main span{display:block;font-size:15px;color:#AEB6CA;margin-top:2px}
+.l1 .main span{color:#FFE2D2}
+.chips{display:flex;flex-wrap:wrap;gap:10px}
+.chips i{font-style:normal;font-size:17px;padding:7px 14px;border-radius:999px;background:#141B2E;border:1.5px solid #3A4670;color:#DCE1EC;white-space:nowrap}
+.l1 .chips i{background:rgba(20,27,46,.35);border-color:rgba(255,255,255,.35);color:#fff}
+.cap{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:25px;color:#C9CFDD;opacity:0;animation:up .6s 3.6s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes slide{from{opacity:0;transform:translateX(-40px)}to{opacity:1;transform:none}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>INSIDE THE AGENT</small><b>How it is built</b></div>
+<div class="stack">
+  <div class="layer l1"><div class="tag">BRAIN</div><div class="main"><b>Claude</b><span>AI model</span></div>
+    <div class="chips"><i>Reads the story</i><i>Plans the tests</i><i>Writes tests &amp; code</i></div></div>
+  <div class="layer l2"><div class="tag">RULES</div><div class="main"><b>"test-plan" skill</b><span>my QA method, as rules</span></div>
+    <div class="chips"><i>Test format</i><i>Gherkin in English</i><i>Linked to the story</i><i>Non-regression for bugs</i></div></div>
+  <div class="layer l3"><div class="tag">CONNECTORS</div><div class="main"><b>Integrations</b><span>APIs the agent uses</span></div>
+    <div class="chips"><i>Jira · MCP</i><i>Xray · GraphQL API</i><i>Telegram · Bot API</i><i>Email · SMTP</i></div></div>
+  <div class="layer l4"><div class="tag">AUTOMATION</div><div class="main"><b>Test code</b><span>runs in a real browser</span></div>
+    <div class="chips"><i>Playwright</i><i>TypeScript</i><i>playwright-bdd</i><i>Python scripts</i></div></div>
+</div>
+<div class="cap">Designed end to end: <em>method, integrations and code</em></div>
+</body></html>

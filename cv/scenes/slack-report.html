@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Slack reporting</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .6s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.win{position:absolute;left:80px;top:165px;width:1120px;height:440px;border-radius:16px;overflow:hidden;display:flex;
+  opacity:0;animation:pop .6s .3s cubic-bezier(.2,1.3,.4,1) forwards;box-shadow:0 16px 40px rgba(0,0,0,.4)}
+.side{width:230px;background:#3F0E40;padding:18px 16px;color:#CFC3CF;font-size:16px}
+.side b{display:block;color:#fff;font-size:18px;margin-bottom:18px}
+.side div{padding:6px 10px;border-radius:6px;margin-bottom:2px}
+.side .on{background:#1164A3;color:#fff;font-weight:700}
+.main{flex:1;background:#fff;color:#1D1C1D;display:flex;flex-direction:column}
+.top{height:54px;border-bottom:1px solid #E8E8E8;display:flex;align-items:center;padding:0 22px;font-size:18px;font-weight:700}
+.msgs{padding:16px 22px;display:flex;flex-direction:column;gap:14px}
+.msg{display:flex;gap:12px;opacity:0;animation:up .55s forwards}
+.logo{width:40px;height:40px;border-radius:8px;background:#141B2E;display:grid;place-items:center;flex:none}
+.who{font-size:15px}.who b{font-size:16px}.who .app{font-size:11px;font-weight:700;color:#616061;background:#EDEDED;border-radius:3px;padding:1px 4px;margin:0 6px}
+.who span{color:#616061;font-size:13px}
+.body{margin-top:4px;font-size:16px;line-height:1.45;border-left:4px solid #DDD;padding-left:12px}
+.body b{font-weight:700}
+.a{color:#1264A3}
+.m1{animation-delay:1.2s}.m1 .body{border-color:#2684FF}
+.m2{animation-delay:2.8s}.m2 .body{border-color:#E0713A}
+.m3{animation-delay:4.4s}.m3 .body{border-color:#2E9E62}
+.pass{display:inline-block;background:#E3F4EA;color:#1E7A48;font-weight:700;font-size:14px;padding:1px 8px;border-radius:999px;margin-left:6px}
+.cap{position:absolute;left:0;right:0;bottom:46px;text-align:center;font-size:24px;color:#C9CFDD;opacity:0;animation:up .6s 6.0s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>REPORTING</small><b>Every result lands in Slack</b></div>
+<div class="win">
+  <div class="side"><b>Testing Factory</b><div class="on"># qa-reports</div><div># social</div><div># general</div></div>
+  <div class="main">
+    <div class="top"># qa-reports</div>
+    <div class="msgs">
+      <div class="msg m1"><div class="logo"><svg width="22" height="22" viewBox="0 0 46 46"><path d="M23 4 L27 19 L42 23 L27 27 L23 42 L19 27 L4 23 L19 19 Z" fill="#E0713A"/></svg></div>
+        <div><div class="who"><b>TestingFactory QA</b><span class="app">APP</span><span>11:04</span></div>
+        <div class="body"><b>Daily Xray report</b> · 6 stories &amp; bugs covered · 51 tests · 6 test plans · <span class="a">SCRUM-8</span></div></div></div>
+      <div class="msg m2"><div class="logo"><svg width="22" height="22" viewBox="0 0 46 46"><path d="M23 4 L27 19 L42 23 L27 27 L23 42 L19 27 L4 23 L19 19 Z" fill="#E0713A"/></svg></div>
+        <div><div class="who"><b>TestingFactory QA</b><span class="app">APP</span><span>11:12</span></div>
+        <div class="body"><b>New tickets in SCRUM</b> · 1 user story → 6 tests, 6 Gherkin scripts, 1 test plan</div></div></div>
+      <div class="msg m3"><div class="logo"><svg width="22" height="22" viewBox="0 0 46 46"><path d="M23 4 L27 19 L42 23 L27 27 L23 42 L19 27 L4 23 L19 19 Z" fill="#E0713A"/></svg></div>
+        <div><div class="who"><b>TestingFactory QA</b><span class="app">APP</span><span>11:31</span></div>
+        <div class="body"><b>Playwright run · saucedemo.com</b><span class="pass">4 / 4 passed</span><br>0 failed · 0 flaky · detailed PDF report generated</div></div></div>
+    </div>
+  </div>
+</div>
+<div class="cap">Daily report, ticket alerts and test runs: <em>one channel for the whole team</em></div>
+</body></html>

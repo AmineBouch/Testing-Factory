@@ -1,0 +1,91 @@
+<title>Testing Factory</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: one narrow column — video first, then what the agent does, figures, stack. */
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --ink:#141B2E; --muted:#5A6378; --line:#DDE2EA;
+  --pass:#1F8A5B; --pass-soft:#E2F3EA; --accent:#C9541F;
+  --display:'Instrument Sans',system-ui,sans-serif; --body:'Instrument Sans',system-ui,sans-serif;
+  --mono:'JetBrains Mono',Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0F1422; --surface:#171E30; --ink:#EEF1F6; --muted:#9AA3B8; --line:#2A3348;
+  --pass:#4CC38A; --pass-soft:#16362A; --accent:#F08A4B; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0F1422; --surface:#171E30; --ink:#EEF1F6; --muted:#9AA3B8; --line:#2A3348;
+  --pass:#4CC38A; --pass-soft:#16362A; --accent:#F08A4B; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.55;margin:0}
+.wrap{max-width:860px;margin:0 auto;padding-block:48px 64px;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));
+  display:flex;flex-direction:column;gap:40px}
+.eyebrow{font-family:var(--mono);font-size:13px;letter-spacing:.08em;color:var(--accent);text-transform:uppercase;margin:0}
+h1{font-family:var(--display);font-size:clamp(36px,7vw,56px);line-height:1.05;margin:8px 0 12px;font-weight:700;text-wrap:balance}
+.lead{font-size:clamp(18px,2.6vw,21px);color:var(--muted);margin:0;max-width:62ch;text-wrap:pretty}
+.player{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+video{display:block;width:100%;max-width:100%;aspect-ratio:16/9;background:#141B2E}
+.run{font-family:var(--mono);font-size:13.5px;display:flex;flex-wrap:wrap;gap:8px 18px;padding:12px 16px;color:var(--muted);border-top:1px solid var(--line)}
+.run b{color:var(--pass);font-weight:600}
+h2{font-size:22px;margin:0 0 16px;text-wrap:balance}
+ol.steps{list-style:none;margin:0;padding:0;display:grid;gap:10px;counter-reset:s}
+ol.steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;
+  background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+ol.steps li::before{content:counter(s);font-family:var(--mono);font-weight:600;width:32px;height:32px;border-radius:50%;
+  display:grid;place-items:center;background:var(--accent);color:#fff;font-size:15px}
+ol.steps strong{display:block}
+ol.steps span{color:var(--muted);font-size:15.5px}
+.figures{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.fig{border-top:3px solid var(--ink);padding-top:10px}
+.fig .n{font-family:var(--display);font-weight:700;font-size:36px;line-height:1;font-variant-numeric:tabular-nums}
+.fig .t{color:var(--muted);font-size:14.5px;margin-top:4px}
+.stack{display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:0;list-style:none}
+.stack li{font-family:var(--mono);font-size:13.5px;padding:6px 12px;border-radius:999px;background:var(--pass-soft);color:var(--ink)}
+.note{font-size:14px;color:var(--muted);margin:0}
+@media (max-width:640px){.figures{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (prefers-reduced-motion:reduce){video{animation:none}}
+</style>
+
+<main class="wrap">
+  <header>
+    <p class="eyebrow">Amine Bouchghoul · QA / Lead QA Engineer · personal project 2026</p>
+    <h1>Testing Factory</h1>
+    <p class="lead">An AI agent that takes a user story from Jira and does the whole testing job on its own: test plan, test cases, automation, execution and report.</p>
+  </header>
+
+  <section class="player" aria-label="Project video">
+    <video id="demo" src="amine-bouchghoul-testing-factory.mp4" poster="poster.jpg" autoplay muted loop playsinline controls preload="metadata"></video>
+    <div class="run"><span>$ npx playwright test</span><span><b>✓ 5 passed</b> in this demo</span><span>Real Jira/Xray screens and a live run</span><span>🔊 Turn sound on for the music</span><a href="https://youtu.be/2ot0yBrObrE" target="_blank" rel="noopener" style="color:var(--accent);font-weight:600">▶ Watch on YouTube</a></div>
+  </section>
+
+  <section>
+    <h2>What the agent does, step by step</h2>
+    <ol class="steps">
+      <li><div><strong>Reads the user story or bug in Jira</strong><span>and writes the test plan for it.</span></div></li>
+      <li><div><strong>Creates the test cases in Xray</strong><span>with steps, plus a Gherkin scenario for each one.</span></div></li>
+      <li><div><strong>Automates them with Playwright</strong><span>TypeScript and playwright-bdd, straight from the Gherkin.</span></div></li>
+      <li><div><strong>Runs them in a real browser</strong><span>every day at 11:00, with no one at the keyboard.</span></div></li>
+      <li><div><strong>Reports the result</strong><span>a PDF report and a short video, sent on Telegram and by email. Each failure comes with its screenshot and an analysis.</span></div></li>
+    </ol>
+  </section>
+
+  <section>
+    <h2>In numbers</h2>
+    <div class="figures">
+      <div class="fig"><div class="n">51</div><div class="t">Xray test cases written by the agent</div></div>
+      <div class="fig"><div class="n">51</div><div class="t">Gherkin scenarios, one per test</div></div>
+      <div class="fig"><div class="n">6</div><div class="t">test plans, one per story or bug</div></div>
+      <div class="fig"><div class="n">1/day</div><div class="t">automatic run and report</div></div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Stack</h2>
+    <ul class="stack">
+      <li>Claude (AI agent)</li><li>Jira</li><li>Xray</li><li>Gherkin / BDD</li>
+      <li>Playwright</li><li>TypeScript</li><li>Python</li><li>Telegram bot</li><li>SMTP</li>
+    </ul>
+  </section>
+
+  <p class="note">The demo runs on a public practice e-commerce site (automationexercise.com).</p>
+</main>

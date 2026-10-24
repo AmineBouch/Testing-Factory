@@ -1,0 +1,25 @@
+# Secrets (identifiants Xray, SMTP, webhooks) : ne jamais publier
+.env
+
+# Python
+__pycache__/
+*.pyc
+
+# Node / Playwright
+node_modules/
+automation/playwright-report/
+automation/test-results/
+automation/.features-gen/
+
+# Fichiers de travail de la vidéo CV (régénérables)
+cv/.frames/
+cv/.captures/
+cv/.music.wav
+
+# État d'exécution local de l'agent
+reports/.agent-run.json
+reports/.last-notified-key
+reports/.backup/
+
+# Réglages locaux Claude Code
+.claude/settings.local.json

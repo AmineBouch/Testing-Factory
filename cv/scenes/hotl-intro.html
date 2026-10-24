@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Human on the loop</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .6s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.loop{position:absolute;left:110px;top:160px;width:440px;height:400px;opacity:0;animation:pop .7s .5s cubic-bezier(.2,1.3,.4,1) forwards}
+.orbit{transform-origin:220px 200px;animation:spin 4s 1.2s linear infinite}
+.node{font-size:17px;font-weight:600;fill:#E6EAF2}
+.watch{position:absolute;left:520px;top:150px;width:240px;height:200px;opacity:0;animation:fade .5s 2.2s forwards}
+.watch path{stroke-dasharray:8 8;animation:dash 1s linear infinite}
+.human{position:absolute;left:760px;top:150px;width:420px;display:flex;align-items:center;gap:18px;padding:18px 22px;border-radius:18px;
+  background:#16264A;border:2px solid #4DA3FF;opacity:0;animation:slide .6s 1.6s cubic-bezier(.2,1.2,.4,1) forwards}
+.avatar{width:64px;height:64px;border-radius:50%;background:#2684FF;display:grid;place-items:center;flex:none}
+.human b{display:block;font-size:24px}.human span{display:block;font-size:17px;color:#A9C8F5;margin-top:2px}
+.acts{position:absolute;left:760px;top:300px;width:420px;display:flex;flex-direction:column;gap:14px}
+.act{display:flex;align-items:center;gap:16px;height:66px;padding:0 18px;border-radius:14px;background:#1D2640;border:1.5px solid #34406A;
+  opacity:0;animation:slide .55s cubic-bezier(.2,1.2,.4,1) forwards}
+.act .ic{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none;background:#24345C}
+.act b{font-size:21px;width:110px;flex:none}.act span{font-size:17px;color:#C9CFDD}
+.a1{animation-delay:2.8s}.a2{animation-delay:3.5s}.a3{animation-delay:4.2s}
+.cmp{position:absolute;left:80px;right:80px;top:590px;display:flex;gap:24px}
+.cmp div{flex:1;height:56px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:19px;opacity:0;animation:up .5s forwards}
+.in{background:#1A2035;color:#7D879F;border:1.5px dashed #3A4566;animation-delay:5.2s!important;position:relative}
+.in s{text-decoration:none;background:linear-gradient(#7D879F,#7D879F) no-repeat 0 55%/0% 2px;animation:strike .6s 6.0s forwards}
+.on{background:#E0713A;color:#fff;font-weight:700;animation-delay:6.4s!important}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes slide{from{opacity:0;transform:translateX(40px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes dash{to{stroke-dashoffset:-32}}
+@keyframes strike{to{background-size:100% 2px}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>HUMAN ON THE LOOP</small><b>The agent acts. A human supervises.</b></div>
+
+<svg class="loop" viewBox="0 0 440 400" width="440" height="400">
+  <circle cx="220" cy="200" r="140" fill="none" stroke="#34406A" stroke-width="4"/>
+  <g class="orbit"><circle cx="220" cy="60" r="11" fill="#E0713A"/><circle cx="220" cy="60" r="20" fill="#E0713A" opacity=".25"/></g>
+  <circle cx="220" cy="200" r="78" fill="#C9541F"/>
+  <text x="220" y="196" text-anchor="middle" font-size="24" font-weight="700" fill="#fff" font-family="Segoe UI">AI agent</text>
+  <text x="220" y="222" text-anchor="middle" font-size="15" fill="#FFE2D2" font-family="Segoe UI">acts on its own</text>
+  <g font-family="Segoe UI">
+    <rect x="150" y="14" width="140" height="34" rx="17" fill="#1D2640" stroke="#34406A"/><text class="node" x="220" y="37" text-anchor="middle">Read story</text>
+    <rect x="320" y="183" width="120" height="34" rx="17" fill="#1D2640" stroke="#34406A"/><text class="node" x="380" y="206" text-anchor="middle">Write tests</text>
+    <rect x="170" y="352" width="100" height="34" rx="17" fill="#1D2640" stroke="#34406A"/><text class="node" x="220" y="375" text-anchor="middle">Run</text>
+    <rect x="0" y="183" width="110" height="34" rx="17" fill="#1D2640" stroke="#34406A"/><text class="node" x="55" y="206" text-anchor="middle">Report</text>
+  </g>
+</svg>
+
+<svg class="watch" viewBox="0 0 240 200" width="240" height="200">
+  <path d="M236 70 C160 70 110 110 40 150" fill="none" stroke="#4DA3FF" stroke-width="3"/>
+  <text x="140" y="62" text-anchor="middle" font-size="16" fill="#A9C8F5" font-family="Segoe UI">watches</text>
+</svg>
+
+<div class="human"><div class="avatar"><svg width="34" height="34" viewBox="0 0 34 34"><circle cx="17" cy="11" r="7" fill="#fff"/><path d="M4 32 C4 22 30 22 30 32 Z" fill="#fff"/></svg></div>
+  <div><b>QA lead</b><span>stays in control, without slowing the agent</span></div></div>
+
+<div class="acts">
+  <div class="act a1"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M1 12 C5 4 19 4 23 12 C19 20 5 20 1 12 Z" fill="none" stroke="#4DA3FF" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="#4DA3FF"/></svg></div><b>Monitor</b><span>reports &amp; alerts in Slack</span></div>
+  <div class="act a2"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><path d="M4 20 L5 15 L16 4 L20 8 L9 19 Z" fill="none" stroke="#4DA3FF" stroke-width="2" stroke-linejoin="round"/></svg></div><b>Correct</b><span>review, reject, confirm</span></div>
+  <div class="act a3"><div class="ic"><svg width="24" height="24" viewBox="0 0 24 24"><rect x="5" y="5" width="14" height="14" rx="2" fill="#E2574C"/></svg></div><b>Stop</b><span>kill switch &amp; safety limits</span></div>
+</div>
+
+<div class="cmp">
+  <div class="in"><s>In the loop: a human approves every single step</s></div>
+  <div class="on">On the loop: the agent acts, the human supervises</div>
+</div>
+</body></html>

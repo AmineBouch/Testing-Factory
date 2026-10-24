@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Stack</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .5s .05s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+svg.edges{position:absolute;inset:0}
+.edge{fill:none;stroke:#E0713A;stroke-width:3;stroke-linecap:round;stroke-dasharray:600;stroke-dashoffset:600}
+.e1{animation:draw .6s 1.0s ease-out forwards}
+.e2{animation:draw .6s 2.0s ease-out forwards}
+.e3{animation:draw .6s 2.6s ease-out forwards}
+.e4{animation:draw .6s 3.2s ease-out forwards}
+.dot{fill:#FFD2B8;opacity:0}
+.node{position:absolute;display:flex;align-items:center;gap:16px;background:#1D2640;border:1.5px solid #34406A;
+  border-radius:18px;padding:16px 20px;opacity:0;animation:pop .5s cubic-bezier(.2,1.4,.4,1) forwards;box-shadow:0 12px 30px rgba(0,0,0,.25)}
+.node .ic{width:56px;height:56px;border-radius:14px;display:grid;place-items:center;flex:none}
+.node b{display:block;font-size:24px;font-weight:700;line-height:1.15}
+.node span{display:block;font-size:16.5px;color:#AEB6CA;margin-top:2px}
+#jira{left:70px;top:316px;width:250px;animation-delay:.5s}
+#xray{left:840px;top:160px;width:380px;animation-delay:2.4s}
+#pw{left:840px;top:316px;width:380px;animation-delay:3.0s}
+#rep{left:840px;top:472px;width:380px;animation-delay:3.6s}
+.agent{position:absolute;left:470px;top:255px;width:220px;height:220px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#F08A4B,#C9541F 70%);display:grid;place-items:center;text-align:center;
+  opacity:0;animation:pop .6s 1.4s cubic-bezier(.2,1.4,.4,1) forwards;box-shadow:0 0 0 0 rgba(224,113,58,.5)}
+.agent .in{display:flex;flex-direction:column;align-items:center;gap:4px}
+.agent b{font-size:30px;font-weight:700;line-height:1.05}
+.agent span{font-size:17px;color:#FFE6D8}
+.ring{position:absolute;left:470px;top:255px;width:220px;height:220px;border-radius:50%;border:2px solid #E0713A;opacity:0;
+  animation:ring 1.6s 2.0s ease-out 3}
+.cap{position:absolute;left:0;right:0;bottom:44px;text-align:center;font-size:26px;color:#C9CFDD;opacity:0;animation:up .6s 4.4s ease-out forwards}
+.cap em{font-style:normal;color:#FFFFFF;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.7)}to{opacity:1;transform:none}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes ring{from{opacity:.8;transform:scale(1)}to{opacity:0;transform:scale(1.45)}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>TECH STACK</small><b>How the AI agent works</b></div>
+<svg class="edges" viewBox="0 0 1280 720" width="1280" height="720">
+  <path class="edge e1" d="M322 366 L468 366"/>
+  <path class="edge e2" d="M680 320 C760 260, 790 210, 838 210"/>
+  <path class="edge e3" d="M692 366 L838 366"/>
+  <path class="edge e4" d="M680 412 C760 472, 790 522, 838 522"/>
+</svg>
+<div class="node" id="jira">
+  <div class="ic" style="background:#2684FF"><svg width="34" height="34" viewBox="0 0 34 34"><path d="M17 3 L31 17 L17 31 L3 17 Z" fill="none" stroke="#fff" stroke-width="3.5"/><path d="M17 11 L23 17 L17 23 L11 17 Z" fill="#fff"/></svg></div>
+  <div><b>Jira</b><span>User story or bug</span></div>
+</div>
+<div class="ring"></div>
+<div class="agent"><div class="in">
+  <svg width="46" height="46" viewBox="0 0 46 46"><path d="M23 4 L27 19 L42 23 L27 27 L23 42 L19 27 L4 23 L19 19 Z" fill="#fff"/></svg>
+  <b>AI Agent</b><span>Claude</span></div></div>
+<div class="node" id="xray">
+  <div class="ic" style="background:#27AE60"><svg width="34" height="34" viewBox="0 0 34 34"><path d="M7 17 L14 24 L27 10" fill="none" stroke="#fff" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+  <div><b>Xray</b><span>Test plan, tests &amp; Gherkin</span></div>
+</div>
+<div class="node" id="pw">
+  <div class="ic" style="background:#2D4A3E"><svg width="36" height="36" viewBox="0 0 36 36"><path d="M12 9 L28 18 L12 27 Z" fill="#45BA4B"/><path d="M8 8 L8 28" stroke="#E2574C" stroke-width="3.5" stroke-linecap="round"/></svg></div>
+  <div><b>Playwright · TypeScript</b><span>Automated &amp; run in a browser</span></div>
+</div>
+<div class="node" id="rep">
+  <div class="ic" style="background:#4A154B"><svg width="34" height="34" viewBox="0 0 34 34"><path d="M12 5 L10 29 M23 5 L21 29 M5 12 H29 M4 22 H28" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/></svg></div>
+  <div><b>Slack</b><span>Reports &amp; alerts for the team</span></div>
+</div>
+<div class="cap">From user story to test report: <em>automated, with a human on the loop</em></div>
+</body></html>

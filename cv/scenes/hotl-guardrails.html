@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Guardrails</title>
+<style>
+@property --n{syntax:'<integer>';inherits:false;initial-value:0}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .6s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.panel{position:absolute;top:165px;height:420px;border-radius:20px;background:#1A2238;border:1.5px solid #2E3858;padding:26px 30px;opacity:0;animation:pop .6s cubic-bezier(.2,1.3,.4,1) forwards}
+.panel h3{font-size:15px;letter-spacing:.22em;color:#9BA3B8;font-weight:600}
+.panel h2{font-size:28px;margin-top:4px}
+#kill{left:80px;width:520px;animation-delay:.8s}
+#lim{left:660px;width:540px;animation-delay:.4s}
+.sw{display:flex;align-items:center;gap:22px;margin-top:30px}
+.track{width:120px;height:60px;border-radius:30px;background:#2E9E62;position:relative;animation:red .3s 5.7s forwards}
+.knob{position:absolute;left:6px;top:6px;width:48px;height:48px;border-radius:50%;background:#fff;animation:move .35s 5.6s cubic-bezier(.3,1.3,.5,1) forwards}
+.sw code{font-family:Consolas,monospace;font-size:22px;color:#C9CFDD}
+.sw code .v{display:inline-grid}
+.sw code .v i{grid-area:1/1;font-style:normal}
+.sw code .v0{color:#7FD4A6;animation:out .1s 5.7s forwards}
+.sw code .v1{color:#F3B1AA;font-weight:700;opacity:0;animation:fade .1s 5.7s forwards}
+.rows{margin-top:30px;display:flex;flex-direction:column;gap:12px}
+.row{display:flex;align-items:center;justify-content:space-between;height:58px;padding:0 18px;border-radius:12px;background:#212B47;font-size:18px}
+.st{position:relative;width:110px;height:32px}
+.st i{position:absolute;inset:0;border-radius:999px;font-style:normal;font-size:15px;font-weight:700;display:grid;place-items:center}
+.run{background:#1F4A36;color:#7FD4A6;animation:out .3s 6.0s forwards}
+.pau{background:#3A3F52;color:#C9CFDD;opacity:0;animation:fade .3s 6.0s forwards}
+.cnt{margin-top:26px;display:flex;align-items:baseline;gap:14px}
+.num{font-size:84px;font-weight:700;line-height:1;--n:0;counter-reset:n var(--n);animation:count 2.6s 1.2s steps(40,end) forwards, hot .3s 3.8s forwards}
+.num::after{content:counter(n)}
+.cnt span{font-size:20px;color:#AEB6CA}
+.bar{margin-top:22px;position:relative;height:22px;border-radius:11px;background:#2A3352}
+.fill{position:absolute;left:0;top:0;bottom:0;width:0;border-radius:11px;background:#E0713A;animation:grow 2.6s 1.2s linear forwards, hotbg .3s 3.8s forwards}
+.mark{position:absolute;left:400px;top:-12px;bottom:-12px;width:4px;background:#E2574C;border-radius:2px}
+.mlab{position:absolute;left:372px;top:34px;font-size:15px;color:#F3B1AA;font-weight:700}
+.stop{margin-top:56px;display:flex;align-items:center;gap:16px;padding:14px 18px;border-radius:14px;background:#3A1D22;border:2px solid #E2574C;
+  opacity:0;animation:pop .5s 4.0s cubic-bezier(.2,1.4,.4,1) forwards}
+.stop .oct{width:44px;height:44px;flex:none}
+.stop b{display:block;font-size:20px}.stop span{display:block;font-size:16px;color:#F3B1AA}
+.cap{position:absolute;left:0;right:0;bottom:50px;text-align:center;font-size:24px;color:#C9CFDD;opacity:0;animation:up .6s 7.0s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes out{to{opacity:0}}
+@keyframes move{to{left:66px}}
+@keyframes red{to{background:#E2574C}}
+@keyframes v1{to{color:#F3B1AA}}
+@keyframes count{to{--n:40}}
+@keyframes grow{to{width:400px}}
+@keyframes hot{to{color:#F3B1AA}}
+@keyframes hotbg{to{background:#E2574C}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>2 · GUARDRAILS</small><b>A kill switch and a safety limit</b></div>
+
+<div class="panel" id="kill"><h3>KILL SWITCH</h3><h2>Pause everything in one second</h2>
+  <div class="sw"><div class="track"><div class="knob"></div></div><code>AGENT_PAUSE = <span class="v"><i class="v0">0</i><i class="v1">1</i></span></code></div>
+  <div class="rows">
+    <div class="row">Every hour · new-ticket watch<div class="st"><i class="run">running</i><i class="pau">paused</i></div></div>
+    <div class="row">Every day 11:00 · test creation<div class="st"><i class="run">running</i><i class="pau">paused</i></div></div>
+  </div>
+</div>
+
+<div class="panel" id="lim"><h3>SAFETY LIMIT</h3><h2>Tickets created in this run</h2>
+  <div class="cnt"><div class="num"></div><span>/ 40 maximum</span></div>
+  <div class="bar"><div class="fill"></div><div class="mark"></div><div class="mlab">limit</div></div>
+  <div class="stop"><svg class="oct" viewBox="0 0 44 44"><path d="M13 2 H31 L42 13 V31 L31 42 H13 L2 31 V13 Z" fill="#E2574C"/><rect x="12" y="19" width="20" height="6" rx="2" fill="#fff"/></svg>
+    <div><b>Run stopped, nothing more created</b><span>alert sent on Slack · no duplicates</span></div></div>
+</div>
+<div class="cap">The agent never runs away: <em>a human can stop it at any time</em></div>
+</body></html>

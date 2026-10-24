@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Product owner</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .6s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.story{position:absolute;left:70px;top:180px;width:330px;border-radius:16px;background:#1D2640;border:1.5px solid #34406A;padding:20px;
+  opacity:0;animation:pop .55s .4s cubic-bezier(.2,1.3,.4,1) forwards}
+.story .bar{height:6px;width:40px;border-radius:3px;background:#2684FF;margin-bottom:12px}
+.story small{display:block;font-size:13px;letter-spacing:.16em;color:#9BA3B8;font-weight:600}
+.story b{display:block;font-size:24px;margin-top:4px}
+.story p{font-size:16px;color:#AEB6CA;margin-top:10px;line-height:1.4}
+.story .ac{margin-top:14px;font-size:16px;color:#C9CFDD}
+.story .ac em{font-style:normal;color:#7D879F}
+.warn{display:inline-block;margin-top:14px;font-size:15px;font-weight:700;padding:5px 12px;border-radius:999px;background:#3A2E14;color:#F2C46B;
+  opacity:0;animation:pop .4s 1.3s forwards}
+.thread{position:absolute;left:450px;top:170px;width:440px;display:flex;flex-direction:column;gap:18px}
+.thread .lbl{font-size:14px;letter-spacing:.18em;color:#9BA3B8;font-weight:600;opacity:0;animation:fade .4s 1.9s forwards}
+.msg{display:flex;gap:14px;align-items:flex-start;opacity:0;animation:up .55s forwards}
+.av{width:46px;height:46px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:700;font-size:16px;color:#fff}
+.bub{border-radius:4px 16px 16px 16px;padding:14px 16px;font-size:17px;line-height:1.4}
+.bub small{display:block;font-size:14px;font-weight:700;margin-bottom:4px}
+.m1{animation-delay:2.3s}.m1 .av{background:#C9541F}.m1 .bub{background:#2A2230;border:1.5px solid #6B3A24}.m1 small{color:#F5A47A}
+.m2{animation-delay:4.2s}.m2 .av{background:#2684FF}.m2 .bub{background:#16264A;border:1.5px solid #2F5FA8}.m2 small{color:#A9C8F5}
+.at{color:#7FB2FF;font-weight:600}
+.arrow{position:absolute;left:905px;top:330px;opacity:0;animation:fade .4s 5.4s forwards}
+.arrow span{display:block;text-align:center;font-size:14px;color:#AEB6CA;margin-top:4px}
+.tests{position:absolute;left:1000px;top:190px;width:230px;display:flex;flex-direction:column;gap:12px}
+.tests .lbl{font-size:14px;letter-spacing:.18em;color:#9BA3B8;font-weight:600;opacity:0;animation:fade .4s 5.6s forwards}
+.t{padding:10px 14px;border-radius:12px;background:#1D2640;border:1.5px solid #2E9E62;font-size:16px;opacity:0;animation:slide .45s cubic-bezier(.2,1.2,.4,1) forwards}
+.t b{color:#7FD4A6;margin-right:6px}
+.t1{animation-delay:5.9s}.t2{animation-delay:6.2s}.t3{animation-delay:6.5s}.t4{animation-delay:6.8s}
+.t5{animation-delay:7.1s;border-color:#E0713A;background:#2A2230}
+.cap{position:absolute;left:0;right:0;bottom:50px;text-align:center;font-size:24px;color:#C9CFDD;opacity:0;animation:up .6s 7.6s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes slide{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>3 · PRODUCT OWNER</small><b>Vague story? The agent asks, the PO answers</b></div>
+
+<div class="story"><div class="bar"></div><small>JIRA · USER STORY</small><b>Pay with a gift card</b>
+  <p>As a customer, I want to pay with a gift card.</p>
+  <div class="ac">Acceptance criteria: <em>none</em></div>
+  <span class="warn">⚠ too vague to test</span></div>
+
+<div class="thread">
+  <div class="lbl">COMMENTS ON THE JIRA TICKET</div>
+  <div class="msg m1"><div class="av">AI</div><div class="bub"><small>AI agent</small><span class="at">@Product Owner</span> Which amounts are allowed? What happens if the card balance is too low?</div></div>
+  <div class="msg m2"><div class="av">PO</div><div class="bub"><small>Product Owner</small>From €10 to €500. If the balance is too low, show an error and keep the cart.</div></div>
+</div>
+
+<div class="arrow"><svg width="80" height="24" viewBox="0 0 80 24"><path d="M4 12 H70" stroke="#E0713A" stroke-width="4" stroke-linecap="round"/><path d="M62 4 L74 12 L62 20" fill="none" stroke="#E0713A" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg><span>next run</span></div>
+
+<div class="tests">
+  <div class="lbl">TESTS CREATED</div>
+  <div class="t t1"><b>✓</b>Valid gift card</div>
+  <div class="t t2"><b>✓</b>Amount below €10</div>
+  <div class="t t3"><b>✓</b>Amount above €500</div>
+  <div class="t t4"><b>✓</b>Balance too low</div>
+  <div class="t t5">+ Gherkin &amp; test plan</div>
+</div>
+<div class="cap">Questions go where the PO already works: <em>in the Jira ticket</em></div>
+</body></html>

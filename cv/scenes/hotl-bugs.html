@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Bug triage</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .6s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.fail{position:absolute;left:60px;top:250px;width:270px;border-radius:16px;background:#2A1D24;border:2px solid #E2574C;padding:18px;
+  opacity:0;animation:pop .55s .4s cubic-bezier(.2,1.3,.4,1) forwards}
+.fail small{display:block;font-size:13px;letter-spacing:.16em;color:#F3B1AA;font-weight:600}
+.fail b{display:block;font-size:22px;margin-top:4px}
+.fail code{display:block;margin-top:10px;font-family:Consolas,monospace;font-size:15px;color:#F3B1AA;line-height:1.5}
+.tri{position:absolute;left:390px;top:190px;width:340px;display:flex;flex-direction:column;gap:14px}
+.tri .lbl{font-size:14px;letter-spacing:.18em;color:#9BA3B8;font-weight:600;opacity:0;animation:fade .4s 1.3s forwards}
+.b{border-radius:14px;background:#1D2640;border:1.5px solid #34406A;padding:12px 16px;opacity:0;animation:slide .45s cubic-bezier(.2,1.2,.4,1) forwards}
+.b b{display:block;font-size:19px}.b span{display:block;font-size:15px;color:#AEB6CA;margin-top:2px}
+.b1{animation:slide .45s 1.6s cubic-bezier(.2,1.2,.4,1) forwards, pick .4s 2.9s forwards}
+.b2{animation:slide .45s 1.9s cubic-bezier(.2,1.2,.4,1) forwards, dim .4s 2.9s forwards}
+.b3{animation:slide .45s 2.2s cubic-bezier(.2,1.2,.4,1) forwards, dim .4s 2.9s forwards}
+svg.edges{position:absolute;inset:0}
+.e{fill:none;stroke:#E0713A;stroke-width:3;stroke-linecap:round;stroke-dasharray:400;stroke-dashoffset:400}
+.e1{animation:draw .5s 1.0s forwards}.e2{animation:draw .5s 3.2s forwards}.e3{stroke:#2E9E62;animation:draw .5s 6.0s forwards}
+.h{opacity:0}.h1{animation:fade .1s 1.4s forwards}.h2{animation:fade .1s 3.6s forwards}.h3{animation:fade .1s 6.4s forwards}
+.bug{position:absolute;left:800px;top:190px;width:400px;border-radius:16px;background:#1D2640;border:2px dashed #E0A23A;padding:20px;
+  opacity:0;animation:pop .55s 3.6s cubic-bezier(.2,1.3,.4,1) forwards, solid .4s 5.4s forwards}
+.bug small{display:block;font-size:13px;letter-spacing:.16em;color:#9BA3B8;font-weight:600}
+.bug b{display:block;font-size:22px;margin-top:4px}
+.bug p{font-size:15.5px;color:#AEB6CA;margin-top:8px;line-height:1.4}
+.chips{position:relative;height:32px;margin-top:12px}
+.chips i{position:absolute;left:0;top:0;font-style:normal;font-size:15px;font-weight:700;padding:5px 12px;border-radius:999px}
+.c1{background:#3A2E14;color:#F2C46B;animation:out .3s 5.4s forwards}
+.c2{background:#3A1D22;color:#F3B1AA;opacity:0;animation:fade .3s 5.4s forwards}
+.hum{position:absolute;left:800px;top:430px;width:400px;display:flex;align-items:center;gap:16px;padding:14px 18px;border-radius:16px;
+  background:#16264A;border:2px solid #4DA3FF;opacity:0;animation:up .5s 4.6s forwards}
+.hum .av{width:48px;height:48px;border-radius:50%;background:#2684FF;display:grid;place-items:center;flex:none}
+.hum b{display:block;font-size:19px}.hum span{display:block;font-size:15px;color:#A9C8F5}
+.tick{margin-left:auto;width:40px;height:40px;border-radius:50%;background:#2E9E62;display:grid;place-items:center;opacity:0;animation:pop .4s 5.3s forwards}
+.dev{position:absolute;left:880px;top:560px;padding:10px 18px;border-radius:999px;background:#1F4A36;color:#7FD4A6;font-size:18px;font-weight:700;
+  opacity:0;animation:up .5s 6.4s forwards}
+.cap{position:absolute;left:0;right:0;bottom:40px;text-align:center;font-size:24px;color:#C9CFDD;opacity:0;animation:up .6s 7.3s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.85)}to{opacity:1;transform:none}}
+@keyframes slide{from{opacity:0;transform:translateX(30px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes out{to{opacity:0}}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes pick{to{border-color:#E0713A;background:#2A2230;box-shadow:0 0 0 3px rgba(224,113,58,.25)}}
+@keyframes dim{to{opacity:.4}}
+@keyframes solid{to{border-style:solid;border-color:#E2574C}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>4 · BUG TRIAGE</small><b>The agent sorts failures, a human confirms the bug</b></div>
+
+<svg class="edges" viewBox="0 0 1280 720" width="1280" height="720">
+  <path class="e e1" d="M332 330 L384 330"/><path class="h h1" d="M378 322 L390 330 L378 338" fill="none" stroke="#E0713A" stroke-width="3" stroke-linecap="round"/>
+  <path class="e e2" d="M732 262 C764 262 764 262 794 262"/><path class="h h2" d="M788 254 L800 262 L788 270" fill="none" stroke="#E0713A" stroke-width="3" stroke-linecap="round"/>
+  <path class="e e3" d="M1000 500 L1000 552"/><path class="h h3" d="M992 546 L1000 558 L1008 546" fill="none" stroke="#2E9E62" stroke-width="3" stroke-linecap="round"/>
+</svg>
+
+<div class="fail"><small>PLAYWRIGHT · FAILED</small><b>Checkout total</b><code>expected  $32.39<br>received  $29.99</code></div>
+
+<div class="tri">
+  <div class="lbl">AI AGENT · TRIAGE</div>
+  <div class="b b1"><b>Real defect</b><span>the app is wrong → draft a bug</span></div>
+  <div class="b b2"><b>Test to fix</b><span>the test is wrong → agent updates it</span></div>
+  <div class="b b3"><b>Flaky</b><span>unstable → rerun and tracked</span></div>
+</div>
+
+<div class="bug"><small>JIRA · DRAFT BUG</small><b>Checkout total ignores the tax</b>
+  <p>Steps, expected vs actual, screenshot and video attached by the agent.</p>
+  <div class="chips"><i class="c1">to-confirm</i><i class="c2">confirmed</i></div></div>
+
+<div class="hum"><div class="av"><svg width="26" height="26" viewBox="0 0 34 34"><circle cx="17" cy="11" r="7" fill="#fff"/><path d="M4 32 C4 22 30 22 30 32 Z" fill="#fff"/></svg></div>
+  <div><b>QA confirms</b><span>reproduced, priority set</span></div>
+  <div class="tick"><svg width="22" height="22" viewBox="0 0 22 22"><path d="M4 11 L9 16 L18 6" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg></div></div>
+<div class="dev">→ Sent to the developers</div>
+<div class="cap">No false bug ever reaches the developers</div>
+</body></html>

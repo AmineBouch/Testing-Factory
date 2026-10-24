@@ -1,0 +1,16 @@
+{
+  "name": "testing-factory-automation",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Exécution automatisée des scénarios Gherkin (Jira SCRUM / Xray) avec Playwright + playwright-bdd",
+  "scripts": {
+    "bddgen": "bddgen",
+    "test": "bddgen && playwright test",
+    "test:headed": "bddgen && playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "playwright-bdd": "^9.2.1"
+  }
+}

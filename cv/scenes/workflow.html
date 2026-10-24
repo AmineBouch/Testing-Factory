@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Workflow</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:1280px;height:720px;overflow:hidden;background:#141B2E;font-family:'Segoe UI',Arial,sans-serif;color:#F3F5F8}
+.grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);background-size:48px 48px}
+.head{position:absolute;left:80px;top:46px;opacity:0;animation:up .5s ease-out forwards}
+.head small{display:block;font-size:17px;letter-spacing:.3em;color:#E0713A;font-weight:600}
+.head b{display:block;font-size:40px;font-weight:700;margin-top:4px}
+.track{position:absolute;left:120px;top:356px;width:1040px;height:4px;background:#2A3352;border-radius:2px}
+.fill{position:absolute;left:120px;top:356px;height:4px;width:0;background:#E0713A;border-radius:2px;animation:fill 3.6s .5s linear forwards}
+.step{position:absolute;top:310px;width:180px;margin-left:-90px;text-align:center;opacity:.25;animation:on .35s ease-out forwards}
+.dot{width:96px;height:96px;margin:0 auto;border-radius:50%;background:#1D2640;border:3px solid #34406A;display:grid;place-items:center;
+  font-size:30px;font-weight:700;color:#AEB6CA;transition:none}
+.step b{display:block;margin-top:14px;font-size:21px;line-height:1.2}
+.step span{display:block;margin-top:4px;font-size:15.5px;color:#9BA3B8;line-height:1.3}
+.step.lit .dot{animation:lit .35s ease-out forwards;animation-delay:inherit}
+.s1{left:120px;animation-delay:.3s}
+.s2{left:293px;animation-delay:1.0s}.s3{left:467px;animation-delay:1.6s}.s4{left:640px;animation-delay:2.2s}
+.s5{left:813px;animation-delay:2.8s}.s6{left:987px;animation-delay:3.4s}.s7{left:1160px;animation-delay:4.0s}
+.s1 .dot{background:#2684FF;border-color:#2684FF;color:#fff}
+.bracket{position:absolute;left:213px;top:250px;width:1027px;height:26px;border:3px solid #E0713A;border-bottom:none;border-radius:12px 12px 0 0;
+  opacity:0;animation:fade .5s 4.3s forwards}
+.blabel{position:absolute;left:0;right:0;top:206px;text-align:center;opacity:0;animation:up .5s 4.3s ease-out forwards}
+.blabel span{display:inline-block;background:#E0713A;color:#fff;font-weight:700;font-size:19px;padding:6px 18px;border-radius:999px;margin-left:200px}
+.human{position:absolute;left:30px;top:226px;width:180px;text-align:center;font-size:15px;color:#7FB2FF;font-weight:600;opacity:0;animation:fade .4s .4s forwards}
+.cap{position:absolute;left:0;right:0;bottom:56px;text-align:center;font-size:26px;color:#C9CFDD;opacity:0;animation:up .6s 4.6s ease-out forwards}
+.cap em{font-style:normal;color:#fff;font-weight:700}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fade{to{opacity:1}}
+@keyframes on{to{opacity:1}}
+@keyframes fill{to{width:1040px}}
+</style></head><body>
+<div class="grid"></div>
+<div class="head"><small>THE WORKFLOW</small><b>From ticket to report, step by step</b></div>
+<div class="track"></div><div class="fill"></div>
+<div class="human">You write it</div>
+<div class="bracket"></div><div class="blabel"><span>Done by the AI agent</span></div>
+<div class="step s1"><div class="dot">1</div><b>User story / bug</b><span>created in Jira</span></div>
+<div class="step s2"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">2</div><b>Test plan</b><span>scope &amp; risks</span></div>
+<div class="step s3"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">3</div><b>Xray tests</b><span>with steps</span></div>
+<div class="step s4"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">4</div><b>Gherkin</b><span>BDD, in English</span></div>
+<div class="step s5"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">5</div><b>Playwright code</b><span>TypeScript</span></div>
+<div class="step s6"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">6</div><b>Run</b><span>real browser</span></div>
+<div class="step s7"><div class="dot" style="background:#C9541F;border-color:#E0713A;color:#fff">7</div><b>Report</b><span>PDF + video</span></div>
+<div class="cap">Automated from <em>ticket</em> to <em>report</em>, supervised by a human</div>
+</body></html>

@@ -1,0 +1,3 @@
+requests
+truststore
+imageio-ffmpeg
