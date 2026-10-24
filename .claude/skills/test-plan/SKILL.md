@@ -105,6 +105,16 @@ corrige et peut tout arrêter.
   ne jamais le contourner, ne jamais modifier `AGENT_PAUSE` toi-même sans demande
   explicite de l'utilisateur.
 
+## Règle permanente — rien ne tourne sur le PC de l'utilisateur, uniquement GitHub Actions
+
+Demandée par l'utilisateur le 2026-10-24 : **les exécutions du projet se font uniquement
+sur GitHub Actions** (dépôt https://github.com/AmineBouch/Testing-Factory, workflow
+`.github/workflows/tests-playwright.yml`, chaque jour à 7h + bouton « Run workflow »).
+- Ne lance jamais `npm test`, `npx playwright test` ni `exec_report.py` en local : pour une
+  exécution, pousse les changements puis déclenche le workflow sur GitHub et lis son résultat.
+- Les tâches planifiées locales (`xray-tests-quotidiens`, `notif-nouveaux-tickets-scrum`)
+  sont désactivées : ne les réactive pas sans demande explicite.
+
 ## Règle permanente — toute exécution automatisée = rapport d'exécution envoyé
 
 Demandée par l'utilisateur le 2026-10-20 : **à la fin de chaque exécution automatisée**
