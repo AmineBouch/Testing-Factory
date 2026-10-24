@@ -80,6 +80,20 @@ jobs:
         if: steps.pret.outputs.ok == 'true'
         run: |
           mkdir -p tmp
+          # Retire espaces et retours à la ligne collés par erreur avec le token (fréquent au copier-coller).
+          tok="$(printf '%s' "$CLAUDE_CODE_OAUTH_TOKEN" | tr -d '[:space:]')"
+          key="$(printf '%s' "$ANTHROPIC_API_KEY" | tr -d '[:space:]')"
+          unset CLAUDE_CODE_OAUTH_TOKEN ANTHROPIC_API_KEY
+          if [ -n "$tok" ]; then
+            # Diagnostic sans fuite : seulement le début conventionnel et la longueur.
+            case "$tok" in sk-ant-oat*) fmt="format OK (sk-ant-oat…)";; *) fmt="format INATTENDU (devrait commencer par sk-ant-oat)";; esac
+            echo "Token Claude : ${#tok} caractères, $fmt"
+            export CLAUDE_CODE_OAUTH_TOKEN="$tok"
+          else
+            case "$key" in sk-ant-api*) fmt="format OK";; *) fmt="format INATTENDU";; esac
+            echo "Clé API Anthropic : ${#key} caractères, $fmt"
+            export ANTHROPIC_API_KEY="$key"
+          fi
           claude -p "$(cat .github/prompts/xray-quotidien.md)" \
             --model claude-sonnet-5-5 \
             --max-turns 200 \
