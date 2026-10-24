@@ -50,22 +50,12 @@ import requests
 import truststore
 
 import guard
+from chatfmt import load_env  # .env + variables d'environnement (Secrets GitHub Actions)
 
 # Utilise le magasin de certificats Windows (antivirus / proxy d'entreprise).
 truststore.inject_into_ssl()
 
 BASE_URL = "https://xray.cloud.getxray.app/api/v2"
-ENV_FILE = Path(__file__).resolve().parents[3] / ".env"
-
-
-def load_env():
-    values = {}
-    for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-        line = line.strip()
-        if line and not line.startswith("#") and "=" in line:
-            key, value = line.split("=", 1)
-            values[key.strip()] = value.strip()
-    return values
 
 
 def authenticate():

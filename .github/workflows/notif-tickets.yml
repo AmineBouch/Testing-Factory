@@ -1,0 +1,64 @@
+# Toutes les heures : signale par mail, Slack et Teams les tickets créés dans le projet Jira SCRUM
+# depuis la dernière notification. Le dernier ticket notifié est gardé dans state/last-notified-key.
+name: Notification nouveaux tickets SCRUM
+
+on:
+  schedule:
+    - cron: "7 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write  # pour enregistrer state/last-notified-key
+
+concurrency:
+  group: etat-agent  # partagé avec le workflow Xray : jamais deux écritures de l'état en même temps
+  cancel-in-progress: false
+
+env:
+  TZ: Europe/Paris
+  JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+  JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+  MAIL_SMTP_USER: ${{ secrets.MAIL_SMTP_USER }}
+  MAIL_SMTP_APP_PASSWORD: ${{ secrets.MAIL_SMTP_APP_PASSWORD }}
+  MAIL_TO: ${{ secrets.MAIL_TO }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+  # Frein d'urgence : Settings > Secrets and variables > Actions > Variables > AGENT_PAUSE = 1
+  AGENT_PAUSE: ${{ vars.AGENT_PAUSE }}
+
+jobs:
+  notifier:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install -q requests truststore
+
+      - name: Vérifier que l'accès Jira est configuré
+        id: pret
+        run: |
+          if [ -z "$JIRA_EMAIL" ] || [ -z "$JIRA_API_TOKEN" ]; then
+            echo "::warning::Secrets JIRA_EMAIL / JIRA_API_TOKEN absents : notification ignorée."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Détecter et notifier les nouveaux tickets
+        if: steps.pret.outputs.ok == 'true'
+        run: python .claude/skills/test-plan/new_tickets.py
+
+      - name: Enregistrer le dernier ticket notifié
+        if: always() && steps.pret.outputs.ok == 'true'
+        run: |
+          git add state/last-notified-key
+          if git diff --cached --quiet; then echo "État inchangé"; exit 0; fi
+          git config user.name "testing-factory-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "État : dernier ticket notifié = SCRUM-$(cat state/last-notified-key) [skip ci]"
+          git pull --rebase -q && git push -q

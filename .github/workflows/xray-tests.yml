@@ -1,0 +1,117 @@
+# Chaque jour à 11h (heure de Paris en hiver) : Claude Code crée les tests Xray, sous-tâches Gherkin
+# et Test Plan des stories/bugs de l'epic SCRUM-8 sans tests, corrige les tests rejetés,
+# écrit le rapport et l'envoie par mail, Slack et Teams. Consigne : .github/prompts/xray-quotidien.md
+name: Tests Xray quotidiens (agent Claude)
+
+on:
+  schedule:
+    - cron: "0 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write  # pour enregistrer le rapport et state/last-notified-key
+
+concurrency:
+  group: etat-agent
+  cancel-in-progress: false
+
+env:
+  TZ: Europe/Paris
+  # Accès à Claude : un des deux suffit (token d'abonnement via « claude setup-token », ou clé API).
+  CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+  ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+  JIRA_EMAIL: ${{ secrets.JIRA_EMAIL }}
+  JIRA_API_TOKEN: ${{ secrets.JIRA_API_TOKEN }}
+  XRAY_CLIENT_ID: ${{ secrets.XRAY_CLIENT_ID }}
+  XRAY_CLIENT_SECRET: ${{ secrets.XRAY_CLIENT_SECRET }}
+  MAIL_SMTP_USER: ${{ secrets.MAIL_SMTP_USER }}
+  MAIL_SMTP_APP_PASSWORD: ${{ secrets.MAIL_SMTP_APP_PASSWORD }}
+  MAIL_TO: ${{ secrets.MAIL_TO }}
+  SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+  TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
+  # Frein d'urgence et limite : variables du dépôt (Settings > Secrets and variables > Actions > Variables)
+  AGENT_PAUSE: ${{ vars.AGENT_PAUSE }}
+  AGENT_MAX_TICKETS: ${{ vars.AGENT_MAX_TICKETS }}
+
+jobs:
+  xray:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Vérifier que les accès sont configurés
+        id: pret
+        run: |
+          manque=""
+          [ -z "$CLAUDE_CODE_OAUTH_TOKEN$ANTHROPIC_API_KEY" ] && manque="$manque CLAUDE_CODE_OAUTH_TOKEN"
+          for k in JIRA_EMAIL JIRA_API_TOKEN XRAY_CLIENT_ID XRAY_CLIENT_SECRET; do
+            [ -z "${!k}" ] && manque="$manque $k"
+          done
+          if [ -n "$manque" ]; then
+            echo "::warning::Secrets absents :$manque. Passage Xray ignoré."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.pret.outputs.ok == 'true'
+
+      - uses: actions/setup-python@v5
+        if: steps.pret.outputs.ok == 'true'
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        if: steps.pret.outputs.ok == 'true'
+        with:
+          node-version: 20
+
+      - name: Installer Claude Code et les dépendances
+        if: steps.pret.outputs.ok == 'true'
+        run: |
+          pip install -q requests truststore
+          npm install -g @anthropic-ai/claude-code
+
+      - name: Vérifier l'accès à Jira (sans afficher de secret)
+        if: steps.pret.outputs.ok == 'true'
+        run: python .claude/skills/test-plan/jira.py check
+
+      - name: Lancer l'agent Xray
+        if: steps.pret.outputs.ok == 'true'
+        run: |
+          mkdir -p tmp
+          claude -p "$(cat .github/prompts/xray-quotidien.md)" \
+            --model claude-sonnet-5-5 \
+            --max-turns 200 \
+            --permission-mode acceptEdits \
+            --allowedTools "Read" "Write" "Edit" "Glob" "Grep" \
+              "Bash(python .claude/skills/test-plan/jira.py:*)" \
+              "Bash(python .claude/skills/test-plan/xray.py:*)" \
+              "Bash(python .claude/skills/test-plan/guard.py:*)" \
+              "Bash(python .claude/skills/test-plan/notify.py:*)" \
+              "Bash(mkdir -p tmp)" "Bash(date:*)" "Bash(ls:*)"
+
+      - name: Garde-fou de fin (si l'agent s'est arrêté avant)
+        if: always() && steps.pret.outputs.ok == 'true'
+        run: python .claude/skills/test-plan/guard.py end || true
+
+      - name: Conserver les fichiers du passage (30 jours)
+        if: always() && steps.pret.outputs.ok == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: xray-${{ github.run_number }}
+          retention-days: 30
+          if-no-files-found: ignore
+          path: |
+            reports/rapport-xray-*.md
+            tmp/
+
+      - name: Enregistrer le rapport et l'état
+        if: always() && steps.pret.outputs.ok == 'true'
+        run: |
+          git add state/last-notified-key reports/rapport-xray-*.md 2>/dev/null || true
+          if git diff --cached --quiet; then echo "Rien à enregistrer"; exit 0; fi
+          git config user.name "testing-factory-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Rapport Xray du $(date +%F) [skip ci]"
+          git pull --rebase -q && git push -q

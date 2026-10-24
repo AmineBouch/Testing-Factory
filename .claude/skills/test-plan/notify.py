@@ -2,8 +2,9 @@
 
 S'appuie sur mailer.py, slack.py et teams.py (identifiants .env,
 jamais affichés). Un canal non configuré dans .env (Slack ou Teams) est ignoré.
-Garde dans reports/.last-notified-key le numéro du dernier ticket SCRUM déjà
-signalé, pour ne jamais notifier deux fois le même ticket.
+Garde dans state/last-notified-key (fichier suivi par git, mis à jour par GitHub
+Actions) le numéro du dernier ticket SCRUM déjà signalé, pour ne jamais notifier
+deux fois le même ticket.
 
 Usage :
     python notify.py last                          # dernier ticket déjà notifié (ex. SCRUM-100)
@@ -23,7 +24,7 @@ from pathlib import Path
 
 HERE = Path(__file__).resolve().parent
 ROOT = HERE.parents[2]
-STATE = ROOT / "reports" / ".last-notified-key"
+STATE = ROOT / "state" / "last-notified-key"
 PROJECT = "SCRUM"
 
 

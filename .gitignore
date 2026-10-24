@@ -23,3 +23,6 @@ reports/.backup/
 
 # Réglages locaux Claude Code
 .claude/settings.local.json
+
+# Fichiers temporaires de l’agent Xray (GitHub Actions)
+tmp/

@@ -38,14 +38,10 @@ class Stop(Exception):
 
 
 def load_env():
-    values = {}
-    if ENV_FILE.exists():
-        for line in ENV_FILE.read_text(encoding="utf-8").splitlines():
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                key, value = line.split("=", 1)
-                values[key.strip()] = value.strip()
-    return values
+    """Lit le .env ; une variable d'environnement non vide du même nom l'emporte
+    (sur GitHub Actions, AGENT_PAUSE et AGENT_MAX_TICKETS sont des variables du dépôt)."""
+    from chatfmt import load_env as _load
+    return _load()
 
 
 def paused():

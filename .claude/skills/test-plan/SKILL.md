@@ -113,7 +113,14 @@ sur GitHub Actions** (dépôt https://github.com/AmineBouch/Testing-Factory, wor
 - Ne lance jamais `npm test`, `npx playwright test` ni `exec_report.py` en local : pour une
   exécution, pousse les changements puis déclenche le workflow sur GitHub et lis son résultat.
 - Les tâches planifiées locales (`xray-tests-quotidiens`, `notif-nouveaux-tickets-scrum`)
-  sont désactivées : ne les réactive pas sans demande explicite.
+  sont désactivées : ne les réactive pas sans demande explicite. Elles sont remplacées par :
+  - `.github/workflows/xray-tests.yml` (chaque jour à 10h UTC) : Claude Code exécute la
+    consigne `.github/prompts/xray-quotidien.md` ; Jira y est accessible par `jira.py` (API REST).
+  - `.github/workflows/notif-tickets.yml` (toutes les heures) : `new_tickets.py` notifie les
+    tickets créés depuis `state/last-notified-key` (fichier suivi par git, commité par le workflow).
+- Frein d'urgence sur GitHub : variable du dépôt `AGENT_PAUSE = 1` (Settings > Secrets and
+  variables > Actions > Variables) ; `AGENT_MAX_TICKETS` pour la limite.
+- Quand tu utilises `notify.py mark` en local, pousse ensuite `state/last-notified-key`.
 
 ## Règle permanente — toute exécution automatisée = rapport d'exécution envoyé
 
